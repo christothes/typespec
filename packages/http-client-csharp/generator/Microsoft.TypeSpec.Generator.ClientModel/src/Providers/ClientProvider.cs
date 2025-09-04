@@ -794,7 +794,7 @@ namespace Microsoft.TypeSpec.Generator.ClientModel.Providers
                 var flowProperties = new Dictionary<ValueExpression, ValueExpression>
                 {
                     // handle scopes by default
-                    [new MemberExpression(typeof(GetTokenOptions), nameof(GetTokenOptions.ScopesPropertyName))] = New.Array(typeof(string), [.. flow.Scopes.Select(Literal)])
+                    [new MemberExpression(typeof(GetTokenOptions), nameof(GetTokenOptions.ScopesPropertyName))] = New.Instance(typeof(ReadOnlyMemory<string>), [.. flow.Scopes.Select(Literal)])
                 };
 
                 if (flow.TokenUrl != null)
@@ -835,10 +835,10 @@ namespace Microsoft.TypeSpec.Generator.ClientModel.Providers
 
             return new FieldProvider(
                 FieldModifiers.Private | FieldModifiers.Static | FieldModifiers.ReadOnly,
-                typeof(string[]),
+                typeof(ReadOnlyMemory<string>),
                 TokenCredentialScopesFieldName,
                 this,
-                initializationValue: New.Array(typeof(string), [.. scopes.Select(Literal)]));
+                initializationValue: New.Instance(typeof(ReadOnlyMemory<string>), [.. scopes.Select(Literal)]));
         }
     }
 }
